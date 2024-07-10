@@ -13,9 +13,19 @@ const addProducts = async (req, res) => {
 };
 
 const getProducts = async (req, res) => {
-  const query = req.body;
   try {
     const result = await Product.find();
+    res.status(201).send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const getSingleProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await Product.findOne({ _id: id });
     res.status(201).send(result);
   } catch (error) {
     console.error(error);
@@ -26,4 +36,5 @@ const getProducts = async (req, res) => {
 module.exports = {
   addProducts,
   getProducts,
+  getSingleProduct,
 };

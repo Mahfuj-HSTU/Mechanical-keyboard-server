@@ -18,7 +18,6 @@ app.get('/', (req, res) => {
   res.send('Mechanical Keyboard server is running...');
 });
 
-// Connect to the database before starting the server
 connectDB()
   .then(() => {
     app.listen(port, () => {
