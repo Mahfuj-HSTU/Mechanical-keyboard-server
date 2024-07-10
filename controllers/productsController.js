@@ -1,0 +1,17 @@
+const Product = require('../models/productsModel');
+
+const addProducts = async (req, res) => {
+  const query = req.body;
+  try {
+    const result = await Product.create(query);
+    console.log(result);
+    res.status(201).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports = {
+  addProducts,
+};

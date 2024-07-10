@@ -1,18 +1,19 @@
-const {
-  MongoClient,
-  ServerApiVersion,
-} = require('mongodb');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-function dbConnect() {
-  const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.p1fbs41.mongodb.net/?retryWrites=true&w=majority`;
+const uri = process.env.DB_URL;
 
-  return (client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    },
-  }));
-}
+const connectDB = async () => {
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('db connected');
+  } catch (e) {
+    console.error('Error!! db not connected => ', e.message);
+    process.exit(1); // Exit process with failure
+  }
+};
 
-module.exports = dbConnect;
+module.exports = connectDB;
