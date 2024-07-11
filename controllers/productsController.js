@@ -50,9 +50,36 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const data = req.body;
+  delete data?._id;
+  console.log('id=>', id);
+  console.log('data=>', data);
+
+  try {
+    const product = await Product.findByIdAndUpdate(
+      id,
+      { $set: data },
+      { new: true }
+    );
+    if (!product) {
+      return res.status(404).send({ message: 'Product not found' });
+    }
+    res.status(200).send({
+      message: 'Product updated successfully',
+      updatedProduct: product,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   addProducts,
   getProducts,
   getSingleProduct,
   deleteProduct,
+  updateProduct,
 };
